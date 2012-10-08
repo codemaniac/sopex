@@ -1,16 +1,25 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
+import glob
 import simplejson as json
 import pyparsing
 from jpype import *
 
 class PennTreebackChunker(object):
   def __init__(self):
-    classpath = "jars/StanfordChunkerWrapper.jar:jars/stanford/stanford-parser.jar:jars/stanford/stanford-parser-2012-03-09-models.jar"
-    startJVM(getDefaultJVMPath(), "-Djava.class.path=%s" % classpath)
-    Chunker = JClass("com.cognizant.awcoe.nlp.chunker.ChunkerWrapper") 
-    self.chunk = Chunker().chunk
+    classpath = ':'.join(glob.glob('jars/*.jar'))
+    startJVM(getDefaultJVMPath(), "-Djava.class.path=%s" % classpath)    
+    String = JClass("java.lang.String")
+    self.StringReader = JClass("java.io.StringReader")
+    self.StringWriter = JClass("java.io.StringWriter")
+    self.PrintWriter = JClass("java.io.PrintWriter")
+    PTBTokenizer = JClass("edu.stanford.nlp.process.PTBTokenizer")
+    LexicalizedParser = JClass("edu.stanford.nlp.parser.lexparser.LexicalizedParser")
+    CoreLabelTokenFactory = JClass("edu.stanford.nlp.process.CoreLabelTokenFactory")
+    self.TreePrint = JClass("edu.stanford.nlp.trees.TreePrint")
+    self.tokenizerFactory = PTBTokenizer.factory(CoreLabelTokenFactory(), "")
+    self.lp = LexicalizedParser.loadModel()
     self.penn_treebank_expr = pyparsing.nestedExpr('(', ')')
 
   def _nestedlist2dict(self, d, l):
@@ -23,7 +32,12 @@ class PennTreebackChunker(object):
         d[l[0]] = v
 
   def chunk_string(self, sentence, json_response=False):
-    penn = self.chunk(sentence)
+    rawWords = self.tokenizerFactory.getTokenizer(self.StringReader(sentence)).tokenize()
+    parse = self.lp.apply(rawWords)
+    stringWriter = self.StringWriter()
+    tp = self.TreePrint("oneline")
+    tp.printTree(parse, self.PrintWriter(stringWriter))
+    penn = stringWriter.toString()
     penn = self.penn_treebank_expr.parseString(penn).asList()[0]
     penn_str = {}
     self._nestedlist2dict(penn_str, penn)

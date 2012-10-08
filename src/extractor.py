@@ -115,7 +115,7 @@ def main():
     'John F. Kennedy was elected as US President in 1960.',
     'The quick brown fox jumps over the lazy dog.',
     'A rare black squirrel has become a regular visitor to a suburban garden',
-    'Ashish hates java.'
+    'As with every Sony PDA before it, the NR70 series is equipped with Sony\'s own memory stick expansion.'
   ]
   chunker = PennTreebackChunker()
   extractor = Extractor(chunker)
