@@ -5,6 +5,7 @@ import glob
 import simplejson as json
 import pyparsing
 from jpype import *
+import os
 
 class PennTreebackChunker(object):
   def __init__(self):

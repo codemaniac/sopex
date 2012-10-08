@@ -8,9 +8,12 @@ from sopex.chunker import PennTreebackChunker
 from sopex.extractor import SOPExtractor
 
 if __name__ == "__main__":
+  if len(sys.argv) < 2:
+    print 'usage: sopex <sentence>'
+    sys.exit()
   chunker = PennTreebackChunker()
   extractor = SOPExtractor(chunker)
-  sop_triplet = extractor.extract(sys.argv[1])
+  sop_triplet = extractor.extract(''.join(sys.argv[1:]))
   print '%s --[%s]--> %s' % (sop_triplet.subject, sop_triplet.predicate, sop_triplet.object)
   extractor.close()
   
