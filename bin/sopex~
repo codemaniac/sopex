@@ -1,0 +1,16 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
+''' sopex command line utility '''
+
+import sys
+from sopex.chunker import PennTreebackChunker
+from sopex.extractor import SOPExtractor
+
+if __name__ == "__main__":
+  chunker = PennTreebackChunker()
+  extractor = SOPExtractor(chunker)
+  sop_triplet = extractor.extract(sys.argv[1])
+  print '%s --[%s]--> %s' % (sop_triplet.subject, sop_triplet.predicate, sop_triplet.object)
+  extractor.close()
+  

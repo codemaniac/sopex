@@ -2,18 +2,19 @@
 # -*- coding: utf-8 -*-
 
 import sys
-from chunker import PennTreebackChunker
 
-class _SOPTriplet(object):
+__all__ = ['Extractor']
+
+class SOPTriplet(object):
   def __init__(self):
     self.subject = None
     self.predicate = None
     self.object = None
 
-class Extractor(object):
+class SOPExtractor(object):
   def __init__(self, chunker):
     self.chunker = chunker
-    self.sop_triplet = _SOPTriplet()
+    self.sop_triplet = SOPTriplet()
     self._NP_subtrees = []
     self._VP_subtrees = []  
 
@@ -52,7 +53,7 @@ class Extractor(object):
       self.sop_triplet.object = element
     
   def extract(self, sentence):
-    self.sop_triplet = _SOPTriplet()
+    self.sop_triplet = SOPTriplet()
     self._NP_subtrees = []
     self._VP_subtrees = []
 
@@ -104,26 +105,4 @@ class Extractor(object):
 
   def close(self):
     self.chunker.close()    
-
-def main():
-  sentences = [
-    'Monkeys are destroying the garden.',
-    'No man can serve two masters.',
-    'When students travel to US, they usually go by air.',    
-    'The Earth revolves around the sun.',
-    'Honesty is the best policy.',
-    'John F. Kennedy was elected as US President in 1960.',
-    'The quick brown fox jumps over the lazy dog.',
-    'A rare black squirrel has become a regular visitor to a suburban garden',
-    'As with every Sony PDA before it, the NR70 series is equipped with Sony\'s own memory stick expansion.'
-  ]
-  chunker = PennTreebackChunker()
-  extractor = Extractor(chunker)
-  for sentence in sentences:
-    sop_triplet = extractor.extract(sentence)
-    print '%s --[%s]--> %s' % (sop_triplet.subject, sop_triplet.predicate, sop_triplet.object)
-  extractor.close()
-   
-if __name__ == "__main__":
-  main()  
 
