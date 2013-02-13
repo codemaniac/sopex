@@ -16,13 +16,7 @@ Development
 
 ### PyPI
 
-#### easy_install
-
     $ easy_install sopex
-
-#### pip
-
-    $ pip install sopex
 
 ## Usage
 
