@@ -4,16 +4,27 @@
 ''' sopex command line utility '''
 
 import sys
-from sopex.chunker import PennTreebackChunker
-from sopex.extractor import SOPExtractor
+
+try:
+  import argparse
+except ImportError:
+  print "argparse required but missing, try 'easy_install argparse' or 'pip install argparse'"
+  sys.exit(1)
 
 if __name__ == "__main__":
-  if len(sys.argv) < 2:
-    print 'usage: sopex <sentence>'
-    sys.exit()
-  chunker = PennTreebackChunker()
-  extractor = SOPExtractor(chunker)
-  sop_triplet = extractor.extract(''.join(sys.argv[1:]))
-  print '%s --[%s]--> %s' % (sop_triplet.subject, sop_triplet.predicate, sop_triplet.object)
-  extractor.close()
-  
+  parser = argparse.ArgumentParser(prog="sopex",
+            description = "Extracts the subejct, predicate and object for a sentence in English")
+
+  parser.add_argument("sentence", help="Input sentence")
+
+  args = parser.parse_args()
+
+  import sopex
+
+  sentence = args.sentence.strip()
+  sentence = sentence if sentence[-1] == '.' else sentence+'.'
+
+  sop_triplet = sopex.extract(sentence)
+  print '%s --[%s]--> %s' % (sop_triplet.subject,
+    sop_triplet.predicate,
+    sop_triplet.object)

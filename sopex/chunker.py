@@ -1,15 +1,16 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-import glob
+import os
 import simplejson as json
 import pyparsing
 from jpype import *
-import os
 
 class PennTreebackChunker(object):
   def __init__(self):
-    classpath = ':'.join(glob.glob('jars/*.jar'))
+    path = os.path.realpath(__file__)
+    path = path[:path.rfind(os.sep)] + os.sep + 'jars'
+    classpath = os.pathsep.join(path+os.sep+jar for jar in os.listdir(path))
     startJVM(getDefaultJVMPath(), "-Djava.class.path=%s" % classpath)    
     String = JClass("java.lang.String")
     self.StringReader = JClass("java.io.StringReader")

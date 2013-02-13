@@ -1,5 +1,5 @@
 include AUTHORS
 include LICENSE
 include ez_setup.py
-include *.jar
+recursive-include sopex *
 

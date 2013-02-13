@@ -74,7 +74,7 @@ class SOPExtractor(object):
         if k in self.NOUNS:
           self.sop_triplet.subject = v
           break
-    except (AttributeError, KeyError):
+    except (AttributeError, KeyError, TypeError):
       pass
 
     # extract predicate          
@@ -85,20 +85,20 @@ class SOPExtractor(object):
         if path[-1] == 'S':
           VP_subtree = tree
           break
-      self._do_with_penn_sub_tree(VP_subtree, self.VERBS, self._extract_predicate)
+      self._do_with_penn_sub_tree(VP_subtree, self.VERBS, self._extract_predicate)      
       parent = VP_subtree
       for p in self.sop_triplet.predicate['path']:
         parent = VP_subtree[p]
       self.sop_triplet.predicate = self.sop_triplet.predicate['tree']
-    except (AttributeError, KeyError):
+    except (AttributeError, KeyError, TypeError):
       pass
 
     # extract object
-    try:    
+    try:         
       self._do_with_penn_sub_tree(parent, self.NOUNS, self._extract_object) 
       if not self.sop_triplet.object:
         self._do_with_penn_sub_tree(parent, self.ADJECTIVES, self._extract_object)            
-    except (AttributeError, KeyError):
+    except (AttributeError, KeyError, TypeError, UnboundLocalError):
       pass
 
     return self.sop_triplet

@@ -1,2 +1,7 @@
 *.*~
 *.pyc
+
+build/
+dist/
+envs/
+sopex.egg-info/
