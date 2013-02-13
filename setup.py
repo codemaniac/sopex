@@ -7,7 +7,7 @@ use_setuptools()
 from setuptools import setup
 setup(
     name='sopex',
-    version='0.1.0',
+    version='0.1.2',
     author='Ashish Prasad (codemaniac)',
     author_email='ashish.ap.rao@gmail.com',
     packages=['sopex'],
@@ -17,15 +17,9 @@ setup(
     license='LICENSE',
     description='Library and CLI to extract the subject, predicate and object for a given english sentence',
     keywords = 'NLP subject predicate object triplet extraction',
-    install_requires=[
-        'setuptools',
-        'simplejson',
-        'pyparsing==1.5',
-        'jpype',
-        'argparse'
-    ],
+    install_requires=['simplejson', 'jpype==0.5', 'argparse', 'pyparsing==1.5'],
     dependency_links = [
-        'https://github.com/originell/jpype/tarball/master#egg=jpype'
+        'https://github.com/originell/jpype/tarball/master#egg=jpype-0.5'
     ]
 
 )
