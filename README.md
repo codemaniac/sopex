@@ -10,7 +10,7 @@ Development
 
 ### Source
 
-    $ https://github.com/codemaniac/sopex.git
+    $ git clone https://github.com/codemaniac/sopex.git
     $ cd sopex
     $ python setup.py install
 
