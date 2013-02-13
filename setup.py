@@ -8,7 +8,7 @@ from setuptools import setup
 setup(
     name='sopex',
     version='0.1.0',
-    uthor='Ashish Prasad (codemaniac)',
+    author='Ashish Prasad (codemaniac)',
     author_email='ashish.ap.rao@gmail.com',
     packages=['sopex'],
     test_suite='tests',
@@ -20,7 +20,7 @@ setup(
     install_requires=[
         'setuptools',
         'simplejson',
-        'pyparsing==1.5.7',
+        'pyparsing==1.5',
         'jpype',
         'argparse'
     ],
